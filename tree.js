@@ -2,7 +2,7 @@
 
 document.addEventListener("keyup", (event) => {
 	if (event.code === "Space") {
-		document.body.innerHTML = "";
+		document.querySelector(".message").style.display = "none";
 		setup();
 	}
 });
@@ -53,10 +53,15 @@ class Tree {
 
 			document.body.append(nodeContainer);
 
-			// document.querySelector(".root").addEventListener("click", () => {
-			// 	tree = new Tree();
-			// 	document.body.innerHTML = "";
-			// });
+			nodeContainer.addEventListener("click", (e) => {
+				clickedNodeValue = parentNodeObject.value;
+
+				if (clickedNodeValue == e.target.id) {
+					document.getElementById(clickedNodeValue).outerHTML = "";
+					tree = new Tree();
+					document.querySelector(".message").style.display = "block";
+				}
+			});
 
 			this.renderNodes(parentNodeObject);
 		}
