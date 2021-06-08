@@ -14,6 +14,8 @@ function setup() {
 	tree.renderTree();
 }
 
+let clickedNodeValue = null;
+
 class Tree {
 	constructor() {
 		this.root = null;
@@ -51,6 +53,11 @@ class Tree {
 
 			document.body.append(nodeContainer);
 
+			// document.querySelector(".root").addEventListener("click", () => {
+			// 	tree = new Tree();
+			// 	document.body.innerHTML = "";
+			// });
+
 			this.renderNodes(parentNodeObject);
 		}
 
@@ -64,6 +71,15 @@ class Tree {
 				document
 					.getElementById(parentNodeObject.value)
 					.insertAdjacentElement("beforeend", nodeContainer);
+
+				nodeContainer.addEventListener("click", (e) => {
+					clickedNodeValue = parentNodeObject.left.value;
+
+					if (clickedNodeValue == e.target.id) {
+						document.getElementById(clickedNodeValue).outerHTML = "";
+						parentNodeObject.left = null;
+					}
+				});
 			}
 
 			this.renderNodes(parentNodeObject.left, modifier + 10);
@@ -78,12 +94,19 @@ class Tree {
 				document
 					.getElementById(parentNodeObject.value)
 					.insertAdjacentElement("beforeend", nodeContainer);
+
+				nodeContainer.addEventListener("click", (e) => {
+					clickedNodeValue = parentNodeObject.right.value;
+
+					if (clickedNodeValue == e.target.id) {
+						document.getElementById(clickedNodeValue).outerHTML = "";
+						parentNodeObject.right = null;
+					}
+				});
 			}
 
 			this.renderNodes(parentNodeObject.right, modifier + 10);
 		}
-
-		if (!parentNodeObject.right && !parentNodeObject.left) return;
 	}
 }
 
@@ -92,6 +115,10 @@ class Node {
 		this.value = val;
 		this.left = null;
 		this.right = null;
+	}
+
+	getValue() {
+		return this.value;
 	}
 
 	search(val) {
